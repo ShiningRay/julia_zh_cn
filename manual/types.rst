@@ -13,12 +13,8 @@ Julia `类型系统 <http://zh.wikipedia.org/zh-cn/%E9%A1%9E%E5%9E%8B%E7%B3%BB%E
 -  值有类型，变量没有类型——变量仅仅是绑定了值的名字而已
 -  抽象类型和具体类型都可以被其它类型和值（目前是整数和符号）参数化
 
-
-Julia's type system is designed to be powerful and expressive, yet
-clear, intuitive and unobtrusive. Many Julia programmers may never feel
-the need to write code that explicitly uses types. Some kinds of
-programming, however, become clearer, simpler, faster and more robust
-with declared types.
+Julia的类型系统的设计目标是强大并且有表达力，同时清晰、直观不晦涩。很多Julia程序员都从不会感到需要在写代码的时候明确用到类型。
+当然，某些情况下使用声明的类型可以使得程序更加清晰、简单、高效和强健。
 
 类型声明
 --------
@@ -198,8 +194,13 @@ Immutable Composite Types
       imag::Float64
     end
 
-Such types behave much like other composite types, except that instances
+这种类型跟一般的复合类型行为基本类似，除了他们的实例是不可以被修改的。
+不可变类型有以下这些优点：Such types behave much like other composite types, except that instances
 of them cannot be modified. Immutable types have several advantages:
+
+- 在某些情况下更加高效。像前面举例的``Complex``之类的类型，可以被有效地压缩成数组，并且在某些情况下编译器可以避免完整地分配不可变对象。
+- 这种类型的构造器所提供的不变量不可能被侵入。
+- 使用不可变对象的代码可以更容易进行推导。
 
 - They are more efficient in some cases. Types like the ``Complex``
   example above can be packed efficiently into arrays, and in some
