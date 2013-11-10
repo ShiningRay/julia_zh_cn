@@ -52,8 +52,8 @@ Julia的类型系统的设计目标是强大并且有表达力，同时清晰、
 “声明”仅发生在特定的上下文中： ::
 
     x::Int8        # a variable by itself
-    local x::Int8  # in a local declaration
-    x::Int8 = 10   # as the left-hand side of an assignment
+    local x::Int8  # 本地的声明in a local declaration
+    x::Int8 = 10   # 作为左手赋值as the left-hand side of an assignment
 
 在值的上下文，如 ``f(x::Int8)`` 中， ``::`` 是类型断言而不是声明。现在还不能在全局作用域或 REPL 中做这种声明，因为 Julia 现在还没有常量类型的全局变量。
 
@@ -195,8 +195,7 @@ Immutable Composite Types
     end
 
 这种类型跟一般的复合类型行为基本类似，除了他们的实例是不可以被修改的。
-不可变类型有以下这些优点：Such types behave much like other composite types, except that instances
-of them cannot be modified. Immutable types have several advantages:
+不可变类型有以下这些优点：
 
 - 在某些情况下更加高效。像前面举例的``Complex``之类的类型，可以被有效地压缩成数组，并且在某些情况下编译器可以避免完整地分配不可变对象。
 - 这种类型的构造器所提供的不变量不可能被侵入。
@@ -210,10 +209,12 @@ of them cannot be modified. Immutable types have several advantages:
   type's constructors.
 - Code using immutable objects can be easier to reason about.
 
+不可变对象也可以包含可变对象，诸如数组做字段。被包含的对象依然可以保持可变性；只有不可变对象自身的字段不可以变成指向其他对象。
 An immutable object might contain mutable objects, such as arrays, as
 fields. Those contained objects will remain mutable; only the fields of the
 immutable object itself cannot be changed to point to different objects.
 
+每个实例关联到特定字段值——字段值。相反，可变对象更像一个小容器可以随着时间变化包含不同的值，所以不会因为特定字段值
 A useful way to think about immutable composites is that each instance is
 associated with specific field values --- the field values alone tell
 you everything about the object. In contrast, a mutable object is like a
@@ -224,10 +225,10 @@ would be considered identical, or if they might need to change independently
 over time. If they would be considered identical, the type should probably
 be immutable.
 
-Declared Types
+Declared Types声明类型
 --------------
 
-The three kinds of types discussed in the previous three sections
+前面三节讨论过的三种类型其实都是互相紧密关联的。他们有以下一样的特性：The three kinds of types discussed in the previous three sections
 are actually all closely related. They share the same key properties:
 
 - They are explicitly declared.
